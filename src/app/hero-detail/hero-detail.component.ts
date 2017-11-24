@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { states, Address } from '../data-model';
 
 @Component({
   selector: 'app-hero-detail',
@@ -8,13 +9,32 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class HeroDetailComponent implements OnInit {
   // https://angular.io/guide/reactive-forms
-  heroForm = new FormGroup ({
-    name: new FormControl()
-  });
+  heroForm: FormGroup;
+  states = states;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) {
+    this.createForm();
+  }
 
   ngOnInit() {
+  }
+
+  createForm(){
+    this.heroForm = this.formBuilder.group({
+      /*name: ''*/ // just the FormControl
+      name: ['', Validators.required], // including validators
+      address: this.formBuilder.group(new Address()),
+      /*
+      address: this.formBuilder.group({ // the child FormGroup
+        street: '',
+        city: '',
+        state: '',
+        zip: ''
+      }),
+      */
+      power: '',
+      sidekick: ''
+    });
   }
 
 }
